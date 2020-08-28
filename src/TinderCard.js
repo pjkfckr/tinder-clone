@@ -4,24 +4,19 @@ import database from "./Firebase";
 import "./TinderCards.css";
 
 
-const TinderCards = () => {
+function TinderCards() {
     const [people, setPeople] = useState([]);
 
     // Piece of code which runs based on a condition
     useEffect(() => {
         // this is where the code runs...
-
-        const unsubscrib = database
+        database
             .collection("people")
             .onSnapshot((snapshot) =>
                 setPeople(snapshot.docs.map((doc) => doc.data()))
             );
-
-        return () => {
-            // this is the cleanUp
-            unsubscrib();
-        };
     }, []);
+
     // BAD
     // const people = [];
     // people.push('park', 'yen')
@@ -40,24 +35,22 @@ const TinderCards = () => {
     return (
         <div>
             <div className="tinderCards__cardContainer">
-                {people.map(person => (
+                {people.map((person) => (
                     <TinderCard
                         className="swipe"
                         key={person.name}
-                        preventSwipe={['up', 'down']}
+                        preventSwipe={["up", "down"]}
                     >
                         <div
-                            style={{ backgroundImage: `url(${person.url}` }}
-                            className="card"
-                        >
-                            <h3>{person.name}</h3>
+                            style={{ backgroundImage: `url(${person.url})` }}
+                            className="card">
                         </div>
-                </TinderCard>
-            ))}
+                    </TinderCard>
+                ))}
             </div>
         </div>
-    )
-};
+    );
+}
 
 
 export default TinderCards
